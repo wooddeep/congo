@@ -9,12 +9,12 @@ MONGODB安装简单，使用灵活，无需事先创建数据库和表，且sche
 当采用MONGODB用于海量日志存储的时候，有两种已有可选方式：
 ### 1) 应用分表
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_by_app.png "应用分表")  
-图1. 单机分库分表  
+*图1. 单机分库分表*  
 在此模式之下，应用程序控制分库、分表，例如可以按照日期作为表名，每一天产生一个新表。当已有物理节点的磁盘空间不足时，添加新的物理节点，在新的物理节点上启动MONGO服务，应用程序连上新的MONGO服务，并按日期创建新表。当添加新的数据库时，应用程序需要维持新的数据库连接，如图1所示mongoclient0，mongoclient1。
 
 ### 2)集群分片
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_by_mongo.png "应用分表")   
-图2. 集群分片模式  
+*图2. 集群分片模式*  
 MONGODB本身支持shard的集群模式，在该模式下，由四种角色组成：mongos、config server、shard、replica set。mongos，数据库集群请求的入口，所有的请求都通过mongos进行协调，不需要在应用程序添加一个路由选择器，mongos自己就是一个请求分发中心，它负责把对应的数据请求转发到对应的shard服务器上；config server，顾名思义为配置服务器，存储所有数据库元信息（路由、分片）的配置。 mongos本身没有物理存储分片服务器和数据路由信息；shard，就是数据分片；Replicat set为shard的复制集，保证了分片数据的高可用。
 
 ## 1.3 方案对比
@@ -25,7 +25,7 @@ MONGODB本身支持shard的集群模式，在该模式下，由四种角色组�
 优点：原生支持，容量可以无限扩展，复制机制保障数据高可用，分片对应用程序透明。  
 缺点：部署复杂，配置麻烦；当加入新的分片时，需要重新配置分片信息，另外需要数据的rebalance，如下图所示：  
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_dat_dis.png "应用分表")  
-图3. 不同分片下，数据的分布  
+*图3. 不同分片下，数据的分布*  
 可见，随着集群内分片数据的增加，需要迁移数据到不同的分片。
 
 ## 1.4 改进方案
@@ -34,7 +34,7 @@ MONGODB本身支持shard的集群模式，在该模式下，由四种角色组�
 # 2.	整体架构
 如图4所示，该系统分为三个部分：proxy集群，zookeeper集群，worker集群。  
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/framework.png "应用分表")  
-图4. 改进集群方案  
+*图4. 改进集群方案*  
 
 ### 1)	worker集群
 work集群由worker节点组成，而worker节点由两部分组成：mongod、agent，其中mongod就是原生的MONGODB服务，agent为mongod代表，需要开发实现。agent对内（worker内）检查mongodb的健康状况，对外向zookeeper集群注册mongod信息，并且和zookeeper保持长连接来标识mongod的存活。同时agent需要观察其他worker的上下线情况。另外，agent通过检测mongo的操作日志，来同步主分片的数据到从分片。
@@ -42,10 +42,10 @@ work集群由worker节点组成，而worker节点由两部分组成：mongod、a
 ### 2)	zookeeper集群
 zookeeper集群为元数据服务集群，zookeeper集群通过PAXAS协议，保证了集群的高可用、以及数据的一致性。Zookeeper以类似文件系统树形结构的方式来存储数据，在该系统中，zookeeper主要保持两类数据：在线工作节点列表信息, 数据库分片信息。  
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/worker_list.png "应用分表")  
-图5. 在线工作节点信息  
+*图5. 在线工作节点信息*  
 如图5所示，/worker目录下为在线工作节点列表，各节点为临时节点。当每一个工作节点启动时，agent会调用zookeeper的接口，在/worker目录下创建自己的mongod信息，并且会和zookeeper保持连接，如果worker因掉线和zookeeper失去连接，则对应的节点会从/worker目录下面删除，其他的work或者proxy可以观察/worker目录以侦听工作节点的上线或离线。  
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/metadata.png "应用分表")  
-图6. 数据库分片信息  
+*图6. 数据库分片信息*  
 如图6所示，/db目录下存储数据库及分片信息，db_name为某一数据库的名称，collection为数据库db_name下面的某一集合（类似于mysql表）名称，slice0~2为集合collection的分片，其中slice0的内容如下：  
 {  
     ”name”: ”collection0”,  	
