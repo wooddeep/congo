@@ -8,7 +8,7 @@ MONGODB安装简单，使用灵活，无需事先创建数据库和表，且sche
 ## 1.2 分片方案
 当采用MONGODB用于海量日志存储的时候，有两种已有可选方式：
 ### 1) 应用分表
-![应用分表](https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=702257389,1274025419&fm=27&gp=0.jpg "应用分表")  
+![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_by_app.png "应用分表")  
 图1. 单机分库分表  
 在此模式之下，应用程序控制分库、分表，例如可以按照日期作为表名，每一天产生一个新表。当已有物理节点的磁盘空间不足时，添加新的物理节点，在新的物理节点上启动MONGO服务，应用程序连上新的MONGO服务，并按日期创建新表。当添加新的数据库时，应用程序需要维持新的数据库连接，如图1所示mongoclient0，mongoclient1。
 
