@@ -9,7 +9,7 @@ MONGODB安装简单，使用灵活，无需事先创建数据库和表，且sche
 当采用MONGODB用于海量日志存储的时候，有两种已有可选方式：
 ### 1) 应用分表
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_by_app.png "应用分表")  
-图1. 单机分库分表  
+<center>图1. 单机分库分表</center> 
 在此模式之下，应用程序控制分库、分表，例如可以按照日期作为表名，每一天产生一个新表。当已有物理节点的磁盘空间不足时，添加新的物理节点，在新的物理节点上启动MONGO服务，应用程序连上新的MONGO服务，并按日期创建新表。当添加新的数据库时，应用程序需要维持新的数据库连接，如图1所示mongoclient0，mongoclient1。
 
 ### 2)集群分片
@@ -63,7 +63,7 @@ db_name，db_namex，db_namey
 collection，collectionx，collectiony
 也就是说，在应用程序看来，数据库db_name中有一个名称为collection的集合，但是该集合映却被拆分成colleciton0~n个分片，且各分片被实际存储于各个worker的mongod中。
 
-##3.1 插入数据
+## 3.1 插入数据
 Step1. 解析mongo协议，获取数据库名称，集合名称，及待插入数据；  
 Step2. 通过数据库名称和集合名称查询zookeeper中的分片树，获取对应的分片列表；  
 Step3. 获取在线的worker列表；  
