@@ -9,7 +9,7 @@ MONGODB安装简单，使用灵活，无需事先创建数据库和表，且sche
 当采用MONGODB用于海量日志存储的时候，有两种已有可选方式：
 ### 1) 应用分表
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/sharding_by_app.png "应用分表")  
-<center>图1. 单机分库分表</center> 
+图1. 单机分库分表  
 在此模式之下，应用程序控制分库、分表，例如可以按照日期作为表名，每一天产生一个新表。当已有物理节点的磁盘空间不足时，添加新的物理节点，在新的物理节点上启动MONGO服务，应用程序连上新的MONGO服务，并按日期创建新表。当添加新的数据库时，应用程序需要维持新的数据库连接，如图1所示mongoclient0，mongoclient1。
 
 ### 2)集群分片
@@ -44,7 +44,7 @@ zookeeper集群为元数据服务集群，zookeeper集群通过PAXAS协议，保
 ![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/worker_list.png "应用分表")  
 图5. 在线工作节点信息  
 如图5所示，/worker目录下为在线工作节点列表，各节点为临时节点。当每一个工作节点启动时，agent会调用zookeeper的接口，在/worker目录下创建自己的mongod信息，并且会和zookeeper保持连接，如果worker因掉线和zookeeper失去连接，则对应的节点会从/worker目录下面删除，其他的work或者proxy可以观察/worker目录以侦听工作节点的上线或离线。  
-![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/metadata.png "应用分表")
+![应用分表](https://github.com/wooddeep/congo/blob/master/res/images/metadata.png "应用分表")  
 图6. 数据库分片信息  
 如图6所示，/db目录下存储数据库及分片信息，db_name为某一数据库的名称，collection为数据库db_name下面的某一集合（类似于mysql表）名称，slice0~2为集合collection的分片，其中slice0的内容如下：  
 {  
