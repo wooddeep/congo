@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://blog.csdn.net/vbirdbest/article/details/71751835 -->
+
+<Configuration status="WARN">
+    <properties>
+        <property name="LOG_HOME">F:/logs</property>
+        <property name="FILE_NAME">frame</property>
+        <property name="log.sql.level">info</property>
+    </properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n" />
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        
+        <RollingRandomAccessFile name="protocolAccessFile" fileName="${LOG_HOME}/protocol.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/protocol-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="daoAccessFile" fileName="${LOG_HOME}/dao.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/dao-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        
+        <RollingRandomAccessFile name="cacheAccessFile" fileName="${LOG_HOME}/cache.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/cache-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        
+       <RollingRandomAccessFile name="statAccessFile" fileName="${LOG_HOME}/stat.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/stat-%d{yyyy-MM-dd HH-mm}-%i.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %l - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingRandomAccessFile" />
+        </Root>
+        
+        <Logger name="protocol" level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="protocolAccessFile" />
+        </Logger>
+ 
+        <Logger name="dao" level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="daoAccessFile" />
+        </Logger>
+        
+        <Logger name="cache" level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="cacheAccessFile" />
+        </Logger>        
+        
+        <Logger name="stat" level="info">
+            <AppenderRef ref="statAccessFile" />
+        </Logger> 
+ 
+    </Loggers>
+
+</Configuration>
+
+
+
+
+
