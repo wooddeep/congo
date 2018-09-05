@@ -59,7 +59,7 @@ public class ZkVerticle extends AbstractVerticle {
 
         vertx.executeBlocking(future -> {
             // String zookeeperConnectionString = "172.21.0.1:2181,172.21.0.2:2181,172.21.0.3:2181"; // 多zk节点
-            final String connectString = "112.74.167.132:2181";
+            final String connectString = sysConfig.getString("zklist", "112.74.167.132:2181");
             RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3); // 重连策略
             CuratorFramework client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
             client.start();
@@ -82,7 +82,7 @@ public class ZkVerticle extends AbstractVerticle {
                 }
             });
 
-            if (sysConfig.getString("worker", "true").equals("false")) { // 主控节点侦测worker的上下线
+            if (sysConfig.getString("master", "false").equals("true")) { // 主控节点侦测worker的上下线
                 try {
                     TreeCache treeCache = new TreeCache(client, "/worker");
                     treeCache.getListenable().addListener((client1, event) -> {  //设置监听器和处理过程
@@ -121,7 +121,7 @@ public class ZkVerticle extends AbstractVerticle {
                 }
             }
 
-            if (sysConfig.getString("worker", "true").equals("true")) { // 工作节点侦测/db目录的变化
+            if (!sysConfig.getString("master", "false").equals("true")) { // 工作节点侦测/db目录的变化
                 try {
                     TreeCache treeCache = new TreeCache(client, "/db");
                     treeCache.getListenable().addListener((client1, event) -> {  //设置监听器和处理过程

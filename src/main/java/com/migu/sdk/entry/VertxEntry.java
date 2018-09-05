@@ -29,7 +29,7 @@ public class VertxEntry {
 
     private static VertxOptions getClusterConfig() {
 
-        String clustHost = Configure.getConfig().getString("clusterHost");
+        String clusterHost = Configure.getConfig().getString("clusterHost");
         HazelcastClusterManager mgr = new HazelcastClusterManager();
 
         Config config = new Config();
@@ -40,15 +40,14 @@ public class VertxEntry {
 
         TcpIpConfig tcpIpConfig = joinConfig.getTcpIpConfig();
         String[] addrs = Configure.getConfig().getString("clusterList").split(",");
-        List<String> members = Arrays.stream(addrs).collect(Collectors.toList());
+        List<String> members = Arrays.stream(addrs).collect(Collectors.toList()); // 集群列表
         tcpIpConfig.setMembers(members);
         tcpIpConfig.setEnabled(true);
-
 
         mgr.setConfig(config);
         VertxOptions options = new VertxOptions().setClusterManager(mgr);
         options.setClustered(true);
-        options.setClusterPublicHost(clustHost);
+        options.setClusterPublicHost(clusterHost);
 
         options.setHAEnabled(true);
 
@@ -69,7 +68,13 @@ public class VertxEntry {
     }
 
     private static void deployVerticles(Vertx vertx) {
-        if (sysConfig.getString("worker", "true").equals("true")) {
+        if (sysConfig.getString("master", "false").equals("true")) { // master
+            vertx.deployVerticle(new MasterVerticle());
+
+            vertx.deployVerticle(new WorkerVerticle(),
+                new DeploymentOptions().setConfig(new JsonObject().put("database", "test")));
+            vertx.deployVerticle(new ZkVerticle(), h -> { });
+        } else { // slave
             String key = sysConfig.getString("key", "null");
             if (!key.matches("\\d+\\.\\d+\\.\\d+\\.\\d+:\\d+")) {
                 logger.error("## key format error!");
@@ -83,17 +88,6 @@ public class VertxEntry {
                 });
 
                 vertx.deployVerticle(new SyncVerticle());
-            });
-
-        } else { // master
-            //vertx.deployVerticle(new StatVerticle());
-            vertx.deployVerticle(new MasterVerticle());
-
-            vertx.deployVerticle(new WorkerVerticle(),
-                new DeploymentOptions().setConfig(new JsonObject().put("database", "test")));
-
-            vertx.deployVerticle(new ZkVerticle(), h -> {
-                vertx.deployVerticle(new HttpVerticle());
             });
         }
     }

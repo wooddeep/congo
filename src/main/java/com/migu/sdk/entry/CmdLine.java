@@ -40,18 +40,19 @@ public class CmdLine {
     public static JsonObject cmlConfig = new JsonObject();
 
     public static OptionDesc[] opts = new OptionDesc[]{
-        new OptionDesc("c", "conf", true, "Set the configure file dir"),
+        new OptionDesc("f", "conf", true, "Set the configure file dir"),
         new OptionDesc("h", "help", false, "Print this usage information"),
-        new OptionDesc("M", "mode", true, "Set the node run mode: cluster & standalone!"),
-        new OptionDesc("C", "clusterHost", true, "Set the cluster host"),
-        new OptionDesc("L", "clusterList", true, "Set the cluster list"),
-        new OptionDesc("P", "port", true, "Set the http server's port", false),
-        new OptionDesc("T", "telport", true, "Set the telnet server's port", false),
-        new OptionDesc("R", "restart", true, "Set the node's restart policy"),
+        new OptionDesc("p", "port", true, "Set the http server's port", false),
+        new OptionDesc("t", "telport", true, "Set the telnet server's port", false),
+        new OptionDesc("r", "restart", true, "Set the node's restart policy"),
         new OptionDesc("l", "logdir", true, "Set the log's directory"),
-        new OptionDesc("W", "worker", true, "Set the node as worker!"),
-        new OptionDesc("x", "master", true, "Set the master's address and port!"),
-        new OptionDesc("k", "key", true, "Set the worker's address and port!")
+        new OptionDesc("m", "master", true, "Set the node as master!"),
+        new OptionDesc("c", "cluster", false, "Set the node's cluster mode when run as master!"),
+        new OptionDesc("H", "clusterHost", true, "Set the cluster host"),
+        new OptionDesc("L", "clusterList", true, "Set the cluster list"),
+        new OptionDesc("z", "zklist", true, "Set the zookeeper list"),
+        //new OptionDesc("x", "master", true, "Set the master's address and port!"),
+        //new OptionDesc("k", "key", true, "Set the worker's address and port!")
     };
 
     public static void parseCmdline(String[] args) throws Exception {
@@ -76,8 +77,8 @@ public class CmdLine {
             System.exit(0);
         }
 
-        if (commandLine.hasOption('c')) {
-            configDir = commandLine.getOptionValue('c');
+        if (commandLine.hasOption('f')) {
+            configDir = commandLine.getOptionValue('f');
             if (configDir.charAt(0) == '.') {
                 configDir = currDir + File.separator + configDir;
                 char lastChar = configDir.charAt(configDir.length() - 1);
