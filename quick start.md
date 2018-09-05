@@ -43,13 +43,13 @@ Usage: java -jar /path-to-jar/congo-(version)-SNAPSHOT.jar [cmd]
         -L      --clusterList   Set the cluster list!  
         -z      --zklist        Set the zookeeper list!  
 其中:  
--f 指定配置文件所在的目录，如果不知道的话，默认为./conf    
+-f 指定配置文件所在的目录，如果不指定的话，默认为./conf    
 -m 设置节点是否以proxy模式运行，默认为false及为agent模式；  
 -d 当设置节点为proxy模式时，-d设置mongo代理服务的端口；  
 -s 当设置节点为agent模式是，-s设置被agent代表的mongodb的地址和端口；  
 -z 设置系统zookeeper集群的列表  
 
-#### 以proxy模式启动节点(master节点, 假设ip地址为10.144.0.31)
+#### 以proxy模式启动节点(master节点, 假设ip地址为10.144.0.30)
 java -jar target\congo-0.0.1-SNAPSHOT.jar -m true -f ./conf -d 57017
 
 #### 以agent模式启动节点(slave节点)
