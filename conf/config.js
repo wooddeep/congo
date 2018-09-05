@@ -12,23 +12,17 @@ var dbgFlag = true
 
 var onlineConf = { // 线上环境配置
     "dbgFlag": dbgFlag,
-    "port" : 9090, // http服务端口
-    "telport": 4000, // telnet服务的端口
     "logdir" : "/work/logs", // 日志路径
-    "worker": "true",
-    "master": "127.0.0.1:9090",
-    "key": "127.0.0.1:27017"
+    "master": "false",
+    "mongod": "127.0.0.1:27017"
 }
 
 
 var dbgConf = {
     "dbgFlag": dbgFlag,
-    "port" : 9090, // http服务端口
-    "telport": 4000, // telnet服务的端口
     "logdir" : "/work/logs", // 日志路径
-    "worker": "true",
-    "master": "127.0.0.1:9090",
-    "key": "127.0.0.1:27017"
+    "master": "false",
+    "mongod": "127.0.0.1:27017"
 }
 
 var getConfig = function() {
