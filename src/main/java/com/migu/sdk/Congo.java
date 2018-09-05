@@ -11,6 +11,12 @@ import org.bson.BasicBSONEncoder;
 
 import java.util.Set;
 
+// master
+// java -jar target\congo-0.0.1-SNAPSHOT.jar -m true -f ./conf -d 57017
+
+// slave
+// java -jar target\congo-0.0.1-SNAPSHOT.jar -f ./conf
+
 /**
  * Created by lihan on 2018/6/22.
  */

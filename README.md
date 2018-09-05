@@ -1,5 +1,8 @@
 # congo
-可动态扩容的分布式MONGODB透明代理
+可动态扩容的分布式MONGODB透明代理 
+ 
+[简书](./startup.md)  
+[百度](http://baidu.com)  
 
 # 1. 背景
 ## 1.1 使用场景

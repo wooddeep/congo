@@ -8,6 +8,8 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 
+import static com.migu.sdk.entry.Configure.sysConfig;
+
 
 /**
  * Created by lihan on 2018/6/15.
@@ -19,7 +21,8 @@ public class MasterVerticle extends AbstractVerticle {
     @Override
     public void start() throws Exception {
 
-        NetServer server = vertx.createNetServer(new NetServerOptions().setPort(47017));
+        NetServer server = vertx.createNetServer(
+            new NetServerOptions().setPort(Integer.parseInt(sysConfig.getString("proxyport", "47017"))));
         server.connectHandler(socket -> {
             socket.handler(buffer -> {
                 MongoHead head = new MongoHead();

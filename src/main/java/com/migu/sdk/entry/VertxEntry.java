@@ -75,7 +75,7 @@ public class VertxEntry {
                 new DeploymentOptions().setConfig(new JsonObject().put("database", "test")));
             vertx.deployVerticle(new ZkVerticle(), h -> { });
         } else { // slave
-            String key = sysConfig.getString("key", "null");
+            String key = sysConfig.getString("mongod", "null");
             if (!key.matches("\\d+\\.\\d+\\.\\d+\\.\\d+:\\d+")) {
                 logger.error("## key format error!");
                 return;
@@ -83,7 +83,7 @@ public class VertxEntry {
 
             vertx.deployVerticle(new ZkVerticle(), h -> {
                 vertx.setTimer(10000, ih -> {
-                    System.out.println("## kick!");
+                    System.out.println("## add mongod!");
                     vertx.eventBus().send("ADD_WORKER", "/" + key.trim());
                 });
 
@@ -93,6 +93,7 @@ public class VertxEntry {
     }
 
     public static void start() throws Exception {
+        /*
         Integer port = sysConfig.getInteger("port");
         if (port == null) {
             System.out.printf("## port: %s error!\n", port);
@@ -108,7 +109,7 @@ public class VertxEntry {
             String.valueOf(sysConfig.getInteger("port")),
             String.valueOf(sysConfig.getInteger("telport"))
         };
-
+        */
         //if (ShellUtil.listenPortExist(ports)) return;
 
         if (sysConfig.getString("mode", "standalone").equals("cluster")) { // 集群模式

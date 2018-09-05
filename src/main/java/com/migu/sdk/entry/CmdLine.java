@@ -42,17 +42,16 @@ public class CmdLine {
     public static OptionDesc[] opts = new OptionDesc[]{
         new OptionDesc("f", "conf", true, "Set the configure file dir"),
         new OptionDesc("h", "help", false, "Print this usage information"),
-        new OptionDesc("p", "port", true, "Set the http server's port", false),
         new OptionDesc("t", "telport", true, "Set the telnet server's port", false),
         new OptionDesc("r", "restart", true, "Set the node's restart policy"),
         new OptionDesc("l", "logdir", true, "Set the log's directory"),
         new OptionDesc("m", "master", true, "Set the node as master!"),
-        new OptionDesc("c", "cluster", false, "Set the node's cluster mode when run as master!"),
+        new OptionDesc("c", "cluster", true, "Set the node's cluster mode when run as master!"),
+        new OptionDesc("d", "proxyport", true, "Set the master's proxy port! when node run as master mode!"),
+        new OptionDesc("s", "mongod", true, "Set the mongodb's address and port when node run as worker mode!"),
         new OptionDesc("H", "clusterHost", true, "Set the cluster host"),
         new OptionDesc("L", "clusterList", true, "Set the cluster list"),
         new OptionDesc("z", "zklist", true, "Set the zookeeper list"),
-        //new OptionDesc("x", "master", true, "Set the master's address and port!"),
-        //new OptionDesc("k", "key", true, "Set the worker's address and port!")
     };
 
     public static void parseCmdline(String[] args) throws Exception {
